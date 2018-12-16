@@ -31,6 +31,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ViewAnimator;
 
+import com.umeng.analytics.MobclickAgent;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -462,6 +464,8 @@ public class DocumentActivity extends Activity {
             edit.putInt("page" + mFileName, mDocView.getDisplayedViewIndex());
             edit.apply();
         }
+        MobclickAgent.onPause(this); // 基础指标统计，不能遗漏
+        MobclickAgent.onPageEnd("DocumentActivity");
     }
 
     public void onDestroy() {
@@ -674,6 +678,14 @@ public class DocumentActivity extends Activity {
     @Override
     protected void onStop() {
         super.onStop();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        MobclickAgent.onResume(this); // 基础指标统计，不能遗漏
+        MobclickAgent.onPageStart("DocumentActivity");
     }
 
     @Override
