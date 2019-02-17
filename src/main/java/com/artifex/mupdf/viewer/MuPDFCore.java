@@ -11,6 +11,7 @@ import com.artifex.mupdf.fitz.Link;
 import com.artifex.mupdf.fitz.Matrix;
 import com.artifex.mupdf.fitz.Outline;
 import com.artifex.mupdf.fitz.Page;
+import com.artifex.mupdf.fitz.Quad;
 import com.artifex.mupdf.fitz.Rect;
 import com.artifex.mupdf.fitz.RectI;
 import com.artifex.mupdf.fitz.android.AndroidDrawDevice;
@@ -142,9 +143,21 @@ public class MuPDFCore
 		//RectF[] rfs = new RectF[rs.length];
 		//for (int i=0; i < rs.length; ++i)
 		//	rfs[i] = new RectF(rs[i].x0, rs[i].y0, rs[i].x1, rs[i].y1);
-		//return rfs;
-        return null;
+		Quad[] quad=page.search(text);
+		RectF[] rfs = new RectF[quad.length];
+		for (int i=0; i < quad.length; ++i) {
+		    rfs[i] =toRect(quad[i]);
+        }
+		return rfs;
 	}
+
+    public static RectF toRect(Quad quad) {
+        float x0 = Math.min(Math.min(quad.ul_x, quad.ur_x), Math.min(quad.ll_x, quad.lr_x));
+        float y0 = Math.min(Math.min(quad.ul_y, quad.ur_y), Math.min(quad.ll_y, quad.lr_y));
+        float x1 = Math.max(Math.max(quad.ul_x, quad.ur_x), Math.max(quad.ll_x, quad.lr_x));
+        float y1 = Math.max(Math.max(quad.ul_y, quad.ur_y), Math.max(quad.ll_y, quad.lr_y));
+        return new RectF(x0, y0, x1, y1);
+    }
 
 	public synchronized boolean hasOutline() {
 		if (outline == null)
