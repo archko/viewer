@@ -1,0 +1,8 @@
+.svn
+/.idea
+/build
+/*.iml
+/build
+/viewer.iml
+/freeline*.zip
+
