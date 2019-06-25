@@ -5,8 +5,9 @@
 	<application>
 		<activity
 			android:name=".DocumentActivity"
-			>
-			<intent-filter>
+			android:configChanges="orientation|screenSize|keyboardHidden"
+			android:label="DocumentActivity">
+			<!--<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
@@ -27,7 +28,7 @@
 				<data android:pathPattern=".*\\.cbz" />
 				<data android:pathPattern=".*\\.epub" />
 				<data android:pathPattern=".*\\.fb2" />
-			</intent-filter>
+			</intent-filter>-->
 		</activity>
 		<activity
 			android:name=".OutlineActivity"

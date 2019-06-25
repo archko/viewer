@@ -1,9 +1,5 @@
 package com.artifex.mupdf.viewer;
 
-import android.graphics.Bitmap;
-import android.graphics.PointF;
-import android.graphics.RectF;
-
 import com.artifex.mupdf.fitz.Cookie;
 import com.artifex.mupdf.fitz.DisplayList;
 import com.artifex.mupdf.fitz.Document;
@@ -11,9 +7,14 @@ import com.artifex.mupdf.fitz.Link;
 import com.artifex.mupdf.fitz.Matrix;
 import com.artifex.mupdf.fitz.Outline;
 import com.artifex.mupdf.fitz.Page;
+import com.artifex.mupdf.fitz.Quad;
 import com.artifex.mupdf.fitz.Rect;
 import com.artifex.mupdf.fitz.RectI;
 import com.artifex.mupdf.fitz.android.AndroidDrawDevice;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.PointF;
 
 import java.util.ArrayList;
 
@@ -29,8 +30,14 @@ public class MuPDFCore
 	private float pageHeight;
 	private DisplayList displayList;
 
+	/* Default to "A Format" pocket book size. */
+	private int layoutW = 312;
+	private int layoutH = 504;
+	private int layoutEM = 10;
+
 	public MuPDFCore(String filename) {
 		doc = Document.openDocument(filename);
+		doc.layout(layoutW, layoutH, layoutEM);
 		pageCount = doc.countPages();
 		resolution = 160;
 		currentPage = -1;
@@ -38,6 +45,7 @@ public class MuPDFCore
 
 	public MuPDFCore(byte buffer[], String magic) {
 		doc = Document.openDocument(buffer, magic);
+		doc.layout(layoutW, layoutH, layoutEM);
 		pageCount = doc.countPages();
 		resolution = 160;
 		currentPage = -1;
@@ -51,6 +59,30 @@ public class MuPDFCore
 		return pageCount;
 	}
 
+	public synchronized boolean isReflowable() {
+		return doc.isReflowable();
+	}
+
+	public synchronized int layout(int oldPage, int w, int h, int em) {
+		if (w != layoutW || h != layoutH || em != layoutEM) {
+			System.out.println("LAYOUT: " + w + "," + h);
+			layoutW = w;
+			layoutH = h;
+			layoutEM = em;
+			long mark = doc.makeBookmark(oldPage);
+			doc.layout(layoutW, layoutH, layoutEM);
+			currentPage = -1;
+			pageCount = doc.countPages();
+			outline = null;
+			try {
+				outline = doc.loadOutline();
+			} catch (Exception ex) {
+				/* ignore error */
+			}
+			return doc.findBookmark(mark);
+		}
+		return oldPage;
+	}
     public synchronized void gotoPage(int pageNum) {
 		/* TODO: page cache */
 		if (pageNum > pageCount-1)
@@ -112,7 +144,7 @@ public class MuPDFCore
 			displayList = page.toDisplayList(false);
 
 		float zoom = resolution / 72;
-		Matrix ctm = new Matrix(zoom);
+		Matrix ctm = new Matrix(zoom, zoom);
 		RectI bbox = new RectI(page.getBounds().transform(ctm));
 		float xscale = (float)pageW / (float)(bbox.x1-bbox.x0);
 		float yscale = (float)pageH / (float)(bbox.y1-bbox.y0);
@@ -120,6 +152,7 @@ public class MuPDFCore
 
 		AndroidDrawDevice dev = new AndroidDrawDevice(bm, patchX, patchY);
 		displayList.run(dev, ctm, cookie);
+		dev.close();
 		dev.destroy();
 	}
 
@@ -136,19 +169,19 @@ public class MuPDFCore
 		return page.getLinks();
 	}
 
-	public synchronized RectF[] searchPage(int pageNum, String text) {
+	public synchronized Quad[] searchPage(int pageNum, String text) {
 		gotoPage(pageNum);
-		//Rect[] rs = page.search(text);
-		//RectF[] rfs = new RectF[rs.length];
-		//for (int i=0; i < rs.length; ++i)
-		//	rfs[i] = new RectF(rs[i].x0, rs[i].y0, rs[i].x1, rs[i].y1);
-		//return rfs;
-        return null;
+		return page.search(text);
 	}
 
 	public synchronized boolean hasOutline() {
-		if (outline == null)
-			outline = doc.loadOutline();
+		if (outline == null) {
+			try {
+				outline = doc.loadOutline();
+			} catch (Exception ex) {
+				/* ignore error */
+			}
+		}
 		return outline != null;
 	}
 
