@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem.OnMenuItemClickListener;
@@ -79,6 +80,7 @@ public class DocumentActivity extends Activity
 	private AlertDialog mAlertDialog;
 	private ArrayList<OutlineActivity.Item> mFlatOutline;
 
+    protected int mDisplayDPI;
 	private int mLayoutEM = 10;
 	private int mLayoutW = 312;
 	private int mLayoutH = 504;
@@ -134,6 +136,9 @@ public class DocumentActivity extends Activity
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		DisplayMetrics metrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(metrics);
+		mDisplayDPI = (int) metrics.densityDpi;
 
 		mAlertBuilder = new AlertDialog.Builder(this);
 
@@ -287,8 +292,8 @@ public class DocumentActivity extends Activity
 			@Override
 			public void onSizeChanged(int w, int h, int oldw, int oldh) {
 				if (core.isReflowable()) {
-					mLayoutW = w * 72 / 160;
-					mLayoutH = h * 72 / 160;
+					mLayoutW = w * 72 / mDisplayDPI;
+					mLayoutH = h * 72 / mDisplayDPI;
 					relayoutDocument();
 				} else {
 					refresh();
@@ -420,18 +425,12 @@ public class DocumentActivity extends Activity
 			mLayoutPopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 				public boolean onMenuItemClick(MenuItem item) {
 					float oldLayoutEM = mLayoutEM;
-					int id = item.getItemId();
-					if (id == R.id.action_layout_6pt) mLayoutEM = 6;
-					else if (id == R.id.action_layout_7pt) mLayoutEM = 7;
-					else if (id == R.id.action_layout_8pt) mLayoutEM = 8;
-					else if (id == R.id.action_layout_9pt) mLayoutEM = 9;
-					else if (id == R.id.action_layout_10pt) mLayoutEM = 10;
-					else if (id == R.id.action_layout_11pt) mLayoutEM = 11;
-					else if (id == R.id.action_layout_12pt) mLayoutEM = 12;
-					else if (id == R.id.action_layout_13pt) mLayoutEM = 13;
-					else if (id == R.id.action_layout_14pt) mLayoutEM = 14;
-					else if (id == R.id.action_layout_15pt) mLayoutEM = 15;
-					else if (id == R.id.action_layout_16pt) mLayoutEM = 16;
+					try {
+						String title = (String) item.getTitle();
+						mLayoutEM = Integer.parseInt(title.replace("pt", ""));
+					} catch (NumberFormatException e) {
+						e.printStackTrace();
+					}
 					if (oldLayoutEM != mLayoutEM)
 						relayoutDocument();
 					return true;
