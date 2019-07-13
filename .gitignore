@@ -4,5 +4,8 @@
 /*.iml
 /build
 /viewer.iml
+/.classpath
+/.project
+/.settings
 /freeline*.zip
 
