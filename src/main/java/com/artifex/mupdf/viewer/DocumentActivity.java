@@ -3,16 +3,12 @@ package com.artifex.mupdf.viewer;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.Rect;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RectShape;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,7 +18,6 @@ import android.text.method.PasswordTransformationMethod;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -38,8 +33,6 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ViewAnimator;
-
-import com.umeng.analytics.MobclickAgent;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -735,9 +728,6 @@ public class DocumentActivity extends Activity
     @Override
     public void onResume() {
         super.onResume();
-
-        MobclickAgent.onResume(this); // 基础指标统计，不能遗漏
-        MobclickAgent.onPageStart("DocumentActivity");
     }
 
 	@Override
