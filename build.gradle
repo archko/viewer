@@ -11,6 +11,4 @@ android {
 
 dependencies {
 	api(name: 'mupdf-android-fitz-release', ext: 'aar')
-	api "com.umeng.umsdk:analytics:${UMENG_ANALYTICS}"
-	api "com.umeng.umsdk:common:${UMENG_COMMON}"
 }
