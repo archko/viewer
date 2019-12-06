@@ -1,5 +1,9 @@
 package com.artifex.mupdf.viewer;
 
+import android.graphics.Bitmap;
+import android.graphics.PointF;
+import android.os.Environment;
+
 import com.artifex.mupdf.fitz.Cookie;
 import com.artifex.mupdf.fitz.DisplayList;
 import com.artifex.mupdf.fitz.Document;
@@ -12,10 +16,7 @@ import com.artifex.mupdf.fitz.Rect;
 import com.artifex.mupdf.fitz.RectI;
 import com.artifex.mupdf.fitz.android.AndroidDrawDevice;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.PointF;
-
+import java.io.File;
 import java.util.ArrayList;
 
 public class MuPDFCore
@@ -35,12 +36,37 @@ public class MuPDFCore
 	private int layoutH = 504;
 	private int layoutEM = 10;
 
+	public static String getAcceleratorPath(String documentPath) {
+		String acceleratorPath = documentPath.substring(1);
+		acceleratorPath = acceleratorPath.replace(File.separatorChar, '%');
+		acceleratorPath = acceleratorPath.replace('\\', '%');
+		acceleratorPath = acceleratorPath.replace(':', '%');
+		String tmpdir = Environment.getExternalStorageDirectory().getPath() + "/amupdf";
+		return new StringBuffer(tmpdir).append(File.separatorChar).append(acceleratorPath).append(".accel").toString();
+	}
+
+	public static boolean acceleratorValid(File documentFile, File acceleratorFile) {
+		long documentModified = documentFile.lastModified();
+		long acceleratorModified = acceleratorFile.lastModified();
+		return acceleratorModified != 0 && acceleratorModified > documentModified;
+	}
+
 	public MuPDFCore(String filename) {
+		//File selectedFile = new File(filename);
+		//String documentPath = selectedFile.getAbsolutePath();
+		//String acceleratorPath = getAcceleratorPath(documentPath);
+		//if (acceleratorValid(selectedFile, new File(acceleratorPath))) {
+		//	doc = Document.openDocument(documentPath, acceleratorPath);
+		//} else {
+		//	doc = Document.openDocument(documentPath);
+		//}
+
 		doc = Document.openDocument(filename);
 		doc.layout(layoutW, layoutH, layoutEM);
 		pageCount = doc.countPages();
 		resolution = 160;
 		currentPage = -1;
+		//doc.saveAccelerator(acceleratorPath);
 	}
 
 	public MuPDFCore(byte buffer[], String magic) {
@@ -69,7 +95,7 @@ public class MuPDFCore
 			layoutW = w;
 			layoutH = h;
 			layoutEM = em;
-			long mark = doc.makeBookmark(oldPage);
+			long mark = doc.makeBookmark(doc.locationFromPageNumber(oldPage));
 			doc.layout(layoutW, layoutH, layoutEM);
 			currentPage = -1;
 			pageCount = doc.countPages();
@@ -79,7 +105,7 @@ public class MuPDFCore
 			} catch (Exception ex) {
 				/* ignore error */
 			}
-			return doc.findBookmark(mark);
+			return doc.pageNumberFromLocation(doc.findBookmark(mark));
 		}
 		return oldPage;
 	}
@@ -169,6 +195,10 @@ public class MuPDFCore
 		return page.getLinks();
 	}
 
+	public synchronized int resolveLink(Link link) {
+		return doc.pageNumberFromLocation(doc.resolveLink(link));
+	}
+
 	public synchronized Quad[] searchPage(int pageNum, String text) {
 		gotoPage(pageNum);
 		return page.search(text);
@@ -187,8 +217,10 @@ public class MuPDFCore
 
 	private void flattenOutlineNodes(ArrayList<OutlineActivity.Item> result, Outline list[], String indent) {
 		for (Outline node : list) {
-			if (node.title != null)
-				result.add(new OutlineActivity.Item(indent + node.title, node.page));
+			if (node.title != null) {
+				int page = doc.pageNumberFromLocation(doc.resolveLink(node));
+				result.add(new OutlineActivity.Item(indent + node.title, page));
+			}
 			if (node.down != null)
 				flattenOutlineNodes(result, node.down, indent + "    ");
 		}
