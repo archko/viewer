@@ -36,6 +36,10 @@ public class MuPDFCore
 	private int layoutH = 504;
 	private int layoutEM = 10;
 
+	public Document getDoc() {
+		return doc;
+	}
+
 	public static String getAcceleratorPath(String documentPath) {
 		String acceleratorPath = documentPath.substring(1);
 		acceleratorPath = acceleratorPath.replace(File.separatorChar, '%');
