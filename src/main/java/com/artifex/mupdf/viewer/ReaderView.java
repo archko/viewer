@@ -24,7 +24,7 @@ public class ReaderView
 		extends AdapterView<Adapter>
 		implements GestureDetector.OnGestureListener, ScaleGestureDetector.OnScaleGestureListener, Runnable {
 	private Context mContext;
-	private boolean mLinksEnabled = false;
+	private boolean mLinksEnabled = true;
 	private boolean tapDisabled = false;
 	private int tapPageMargin;
 
