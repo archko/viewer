@@ -911,9 +911,11 @@ public class ReaderView
 			PageView pageView = (PageView) getDisplayedView();
 			if (mLinksEnabled&&pageView!=null) {
 				int page=pageView.hitLink(e.getX(), e.getY());
-				if (page>0) {
+				if (page > 0) {
 					pushHistory();
 					setDisplayedViewIndex(page);
+				} else {
+					onTapMainDocArea();
 				}
 			} else if (e.getX() < tapPageMargin) {
 				smartMoveBackwards();

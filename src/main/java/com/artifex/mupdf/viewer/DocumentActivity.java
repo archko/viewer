@@ -64,25 +64,24 @@ public class DocumentActivity extends Activity
 	private ImageButton  mSearchBack;
 	private ImageButton  mSearchFwd;
 	private ImageButton  mSearchClose;
-	private EditText     mSearchText;
-	private SearchTask   mSearchTask;
+	private EditText mSearchText;
+	private SearchTask mSearchTask;
 	private AlertDialog.Builder mAlertBuilder;
-	private boolean    mLinkHighlight = false;
+	private boolean mLinkHighlight = false;
 	private final Handler mHandler = new Handler();
-	private boolean mAlertsActive= false;
+	private boolean mAlertsActive = false;
 	private AlertDialog mAlertDialog;
 	private ArrayList<OutlineActivity.Item> mFlatOutline;
 
-    protected int mDisplayDPI;
-	private int mLayoutEM = 10;
+	protected int mDisplayDPI;
+	private int mLayoutEM = 8;
 	private int mLayoutW = 312;
 	private int mLayoutH = 504;
 
 	protected View mLayoutButton;
 	protected PopupMenu mLayoutPopupMenu;
 
-	private MuPDFCore openFile(String path)
-	{
+	private MuPDFCore openFile(String path) {
 		int lastSlashPos = path.lastIndexOf('/');
 		mFileName = new String(lastSlashPos == -1
 					? path
