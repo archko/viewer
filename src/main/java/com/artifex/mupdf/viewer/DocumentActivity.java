@@ -74,9 +74,9 @@ public class DocumentActivity extends Activity
 	private ArrayList<OutlineActivity.Item> mFlatOutline;
 
 	protected int mDisplayDPI;
-	private int mLayoutEM = 8;
-	private int mLayoutW = 312;
-	private int mLayoutH = 504;
+	private int mLayoutEM = 16;
+	private int mLayoutW = 720;
+	private int mLayoutH = 1080;
 
 	protected View mLayoutButton;
 	protected PopupMenu mLayoutPopupMenu;
@@ -281,16 +281,16 @@ public class DocumentActivity extends Activity
 				hideButtons();
 			}
 
-			@Override
-			public void onSizeChanged(int w, int h, int oldw, int oldh) {
-				if (core.isReflowable()) {
-					mLayoutW = w * 72 / mDisplayDPI;
-					mLayoutH = h * 72 / mDisplayDPI;
-					relayoutDocument();
-				} else {
-					refresh();
-				}
-			}
+			//@Override
+			//public void onSizeChanged(int w, int h, int oldw, int oldh) {
+			//	if (core.isReflowable()) {
+			//		mLayoutW = w * 72 / mDisplayDPI;
+			//		mLayoutH = h * 72 / mDisplayDPI;
+			//		relayoutDocument();
+			//	} else {
+			//		refresh();
+			//	}
+			//}
 		};
 		mDocView.setAdapter(new PageAdapter(this, core));
 
