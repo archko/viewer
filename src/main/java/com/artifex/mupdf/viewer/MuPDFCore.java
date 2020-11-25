@@ -4,16 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.os.Environment;
 
-import com.artifex.mupdf.fitz.Cookie;
-import com.artifex.mupdf.fitz.DisplayList;
-import com.artifex.mupdf.fitz.Document;
-import com.artifex.mupdf.fitz.Link;
-import com.artifex.mupdf.fitz.Matrix;
-import com.artifex.mupdf.fitz.Outline;
-import com.artifex.mupdf.fitz.Page;
-import com.artifex.mupdf.fitz.Quad;
-import com.artifex.mupdf.fitz.Rect;
-import com.artifex.mupdf.fitz.RectI;
+import com.artifex.mupdf.fitz.*;
 import com.artifex.mupdf.fitz.android.AndroidDrawDevice;
 
 import java.io.File;

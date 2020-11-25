@@ -1,41 +1,21 @@
 package com.artifex.mupdf.viewer;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.*;
+import android.graphics.Bitmap.Config;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Handler;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+
 import com.artifex.mupdf.fitz.Cookie;
 import com.artifex.mupdf.fitz.Link;
 import com.artifex.mupdf.fitz.Quad;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import android.annotation.TargetApi;
-import android.app.AlertDialog;
-import android.content.ClipData;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Bitmap.Config;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.Point;
-import android.graphics.PointF;
-import android.graphics.Rect;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Handler;
-import android.text.method.PasswordTransformationMethod;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.os.AsyncTask;
 
 // Make our ImageViews opaque to optimize redraw
 class OpaqueImageView extends ImageView {
