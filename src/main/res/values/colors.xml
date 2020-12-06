@@ -2,4 +2,40 @@
 <resources>
 	<color name="page_indicator">#C0202020</color>
 	<color name="toolbar">#C0202020</color>
+
+	<color name="sodk_editor_palette_grey">#BCBCBC</color>
+	<color name="sodk_editor_palette_grey_2">#555555</color>
+
+	<color name="sodk_editor_palette_orange">#FFAA00</color>
+	<color name="sodk_editor_palette_white">#FFFFFF</color>
+	<color name="sodk_editor_palette_black">#000000</color>
+	<color name="sodk_editor_palette_slate_blue">#6666FF</color>
+	<color name="sodk_editor_palette_grey_5">#BBBBBB</color>
+	<color name="sodk_editor_palette_ltgrey">#CCCCCC</color>
+	<color name="sodk_editor_transparent">#00000000</color>
+	<color name="sodk_editor_palette_red_1">#E53125</color>
+
+	<!-- PDF TOC Link Pressed Fill Color -->
+	<color name="sodk_editor_toc_link_fill">@color/sodk_editor_palette_ltgrey</color>
+
+	<color name="sodk_editor_page_default_bg_color">#ffffffff</color>
+	<!-- Document View Background Color -->
+	<color name="sodk_editor_doc_background">@color/sodk_editor_palette_grey</color>
+	<!-- Document Pages View Border Colors -->
+	<color name="sodk_editor_page_border_color">@color/sodk_editor_palette_grey_2</color>
+	<color name="sodk_editor_selected_page_border_color">@color/sodk_editor_palette_orange</color>
+
+	<!-- PDF TOC Colors -->
+	<color name="sodk_editor_toc_bg_color">@color/sodk_editor_palette_white</color>
+	<color name="sodk_editor_toc_title_textcolor">@color/sodk_editor_palette_black</color>
+	<color name="sodk_editor_toc_cancel_textcolor">@color/sodk_editor_palette_slate_blue</color>
+	<color name="sodk_editor_toc_divider_color">@color/sodk_editor_palette_grey_5</color>
+
+	<!-- Button State Colors. -->
+	<color name="sodk_editor_button_normal">@color/sodk_editor_transparent</color>
+
+	<color name="sodk_editor_header_pdf_color">@color/sodk_editor_palette_red_1</color>
+
+
+
 </resources>

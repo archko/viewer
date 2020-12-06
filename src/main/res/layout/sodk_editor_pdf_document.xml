@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/page_and_list_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/doc_inner_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false">
+
+            <LinearLayout
+                android:id="@+id/doc_cover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/sodk_editor_transparent"
+                android:orientation="vertical"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/pages_container"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="@integer/sodk_editor_pagelist_width_percentage"
+            android:orientation="vertical"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:visibility="gone"></RelativeLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

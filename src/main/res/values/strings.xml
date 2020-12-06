@@ -11,4 +11,11 @@
 	<string name="search">Search&#x2026;</string>
 	<string name="searching_">Searching&#x2026;</string>
 	<string name="text_not_found">Text not found</string>
+
+
+	<string name="sodk_editor_page_d_of_d" formatted="false">第%d页，共%d页</string>
+
+
+
+
 </resources>
