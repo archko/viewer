@@ -48,7 +48,7 @@ public abstract class ArDkLib
     public static void setSecureFS(SOSecureFS fs) {mSecureFS=fs;}
     public static SOSecureFS getSecureFS() {return mSecureFS;}
 
-    private static ConfigOptions mAppConfigOptions = null;
+    private static ConfigOptions mAppConfigOptions = new ConfigOptions();
     public static void setAppConfigOptions(ConfigOptions co) {mAppConfigOptions=co;}
     public static ConfigOptions getAppConfigOptions()
     {
