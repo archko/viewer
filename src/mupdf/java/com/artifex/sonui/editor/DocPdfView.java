@@ -60,10 +60,13 @@ public class DocPdfView extends DocView
         getGlobalVisibleRect(viewport);
         if (y < tapPageMargin) {
             smoothScrollBy(getScrollX(), viewport.height() - SCROLL_GAP);
+            return true;
         } else if (y > super.getHeight() - tapPageMargin) {
             smoothScrollBy(getScrollX(), -viewport.height() + SCROLL_GAP);
+            return true;
+        } else {
+            return false;
         }
-        return true;
     }
 
     @Override
