@@ -783,7 +783,7 @@ public class NUIDocView
                             onLayoutChanged();
                         }
                     });
-                    //TODO mSession.open(mFileState.getInternalPath(), mDocCfgOptions);
+                    mSession.open(mDocUserPath, mDocCfgOptions);
 
                     //  give the open doc to the adapter and views
                     mDocView.setDoc(mSession.getDoc());
