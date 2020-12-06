@@ -3,10 +3,10 @@ package com.artifex.solib;
 import android.graphics.Rect;
 
 import com.artifex.mupdf.fitz.PDFAnnotation;
+import com.artifex.mupdf.fitz.PDFWidget;
 import com.artifex.mupdf.fitz.PKCS7Signer;
 import com.artifex.mupdf.fitz.PKCS7Verifier;
 import com.artifex.mupdf.fitz.Quad;
-import com.artifex.mupdf.fitz.PDFWidget;
 
 
 public class MuPDFWidget

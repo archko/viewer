@@ -1,7 +1,6 @@
 package com.artifex.solib;
 
 import android.graphics.PointF;
-import android.graphics.RectF;
 
 import java.util.ArrayList;
 

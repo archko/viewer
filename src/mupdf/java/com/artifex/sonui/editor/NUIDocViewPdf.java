@@ -1,7 +1,6 @@
 package com.artifex.sonui.editor;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.widget.Button;
 
 import com.artifex.mupdf.viewer.R;
 import com.artifex.solib.ArDkLib;
-import com.artifex.solib.FileUtils;
 import com.artifex.solib.MuPDFDoc;
 import com.artifex.solib.SOLinkData;
 

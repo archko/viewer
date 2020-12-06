@@ -10,7 +10,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Handler;
-
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,14 +27,7 @@ import com.artifex.solib.ConfigOptions;
 import com.artifex.solib.FileUtils;
 import com.artifex.solib.MuPDFLib;
 
-import java.io.IOException;
-import java.lang.Boolean;
-import java.lang.ClassNotFoundException;
-import java.lang.ExceptionInInitializerError;
-import java.lang.LinkageError;
-import java.lang.UnsupportedOperationException;
 import java.util.ArrayList;
-import android.util.Log;
 
 public class NUIDocView
         extends FrameLayout implements DocViewHost, View.OnClickListener

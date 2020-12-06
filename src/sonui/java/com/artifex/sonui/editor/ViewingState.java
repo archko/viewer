@@ -9,7 +9,6 @@ package com.artifex.sonui.editor;
 //  pageListVisible - whether to show the page list initially
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
 public class ViewingState
 {

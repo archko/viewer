@@ -1,6 +1,5 @@
 package com.artifex.sonui.editor;
 
-import com.artifex.mupdf.fitz.PDFWidget;
 import com.artifex.mupdf.fitz.PKCS7Verifier;
 
 import java.util.HashMap;

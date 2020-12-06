@@ -16,8 +16,8 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.artifex.mupdf.viewer.R;
-import com.artifex.solib.ArDkLib;
 import com.artifex.solib.ArDkDoc;
+import com.artifex.solib.ArDkLib;
 import com.artifex.solib.SOLinkData;
 
 import java.util.ArrayList;

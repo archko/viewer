@@ -14,11 +14,11 @@ import com.artifex.mupdf.fitz.Location;
 import com.artifex.mupdf.fitz.Matrix;
 import com.artifex.mupdf.fitz.PDFAnnotation;
 import com.artifex.mupdf.fitz.PDFPage;
+import com.artifex.mupdf.fitz.PDFWidget;
 import com.artifex.mupdf.fitz.Page;
 import com.artifex.mupdf.fitz.Quad;
 import com.artifex.mupdf.fitz.Rect;
 import com.artifex.mupdf.fitz.StructuredText;
-import com.artifex.mupdf.fitz.PDFWidget;
 import com.artifex.mupdf.fitz.android.AndroidDrawDevice;
 
 import java.util.ArrayList;

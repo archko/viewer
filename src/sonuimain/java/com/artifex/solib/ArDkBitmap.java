@@ -2,7 +2,6 @@ package com.artifex.solib;
 
 import android.graphics.Bitmap;
 import android.graphics.Rect;
-import java.lang.IllegalArgumentException;
 
 public class ArDkBitmap implements Comparable<ArDkBitmap>
 {

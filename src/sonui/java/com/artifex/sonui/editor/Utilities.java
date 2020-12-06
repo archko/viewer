@@ -13,7 +13,6 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.IBinder;
 import android.provider.Settings;
-import androidx.annotation.ColorRes;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
@@ -37,6 +36,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import androidx.annotation.ColorRes;
 
 public class Utilities
 {

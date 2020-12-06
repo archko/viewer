@@ -5,7 +5,6 @@ import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-import com.artifex.solib.MuPDFDoc;
 import com.artifex.solib.MuPDFWidget;
 
 public class DocPdfView extends DocView

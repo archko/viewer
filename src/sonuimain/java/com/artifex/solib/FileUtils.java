@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.OpenableColumns;
-import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 
@@ -24,6 +23,8 @@ import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.UUID;
 import java.util.regex.Pattern;
+
+import androidx.core.content.ContextCompat;
 
 public class FileUtils
 {

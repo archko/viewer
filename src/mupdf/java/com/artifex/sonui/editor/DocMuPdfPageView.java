@@ -2,35 +2,16 @@ package com.artifex.sonui.editor;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.os.Handler;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.view.ContextThemeWrapper;
-import androidx.core.content.ContextCompat;
-
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
-import com.artifex.mupdf.fitz.PKCS7Verifier;
-import com.artifex.mupdf.viewer.R;
+import com.artifex.solib.ArDkDoc;
 import com.artifex.solib.ConfigOptions;
 import com.artifex.solib.MuPDFDoc;
-import com.artifex.solib.MuPDFWidget;
-import com.artifex.solib.ArDkDoc;
-
 import com.artifex.solib.MuPDFPage;
-import com.artifex.solib.Worker;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class DocMuPdfPageView extends DocPdfPageView
 {

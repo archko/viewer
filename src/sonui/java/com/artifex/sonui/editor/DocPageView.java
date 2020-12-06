@@ -12,8 +12,6 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Handler;
-import androidx.core.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -21,12 +19,14 @@ import com.artifex.mupdf.viewer.R;
 import com.artifex.solib.ArDkBitmap;
 import com.artifex.solib.ArDkDoc;
 import com.artifex.solib.ArDkLib;
+import com.artifex.solib.ArDkPage;
+import com.artifex.solib.ArDkRender;
 import com.artifex.solib.ConfigOptions;
 import com.artifex.solib.SOHyperlink;
-import com.artifex.solib.ArDkPage;
 import com.artifex.solib.SOPageListener;
-import com.artifex.solib.ArDkRender;
 import com.artifex.solib.SORenderListener;
+
+import androidx.core.content.ContextCompat;
 
 public class DocPageView extends View implements SOPageListener
 {

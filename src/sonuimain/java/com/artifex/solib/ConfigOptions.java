@@ -1,10 +1,10 @@
 package com.artifex.solib;
 
-import android.util.Log;
-import android.view.View;
 import android.graphics.Point;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+import android.view.View;
 
 public class ConfigOptions implements Cloneable, Parcelable
 {

@@ -10,12 +10,9 @@
 package com.artifex.sonui.editor;
 
 import android.content.Context;
-import android.graphics.Point;
 import android.graphics.RectF;
 import android.net.Uri;
 import android.util.AttributeSet;
-
-import com.artifex.solib.ArDkLib;
 
 public class DocumentView extends NUIView {
 

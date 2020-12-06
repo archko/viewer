@@ -5,7 +5,6 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Handler;
-import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.view.GestureDetector;
@@ -20,11 +19,13 @@ import android.widget.Scroller;
 
 import com.artifex.mupdf.viewer.R;
 import com.artifex.solib.ArDkBitmap;
-import com.artifex.solib.ConfigOptions;
 import com.artifex.solib.ArDkDoc;
+import com.artifex.solib.ConfigOptions;
 import com.artifex.solib.SORenderListener;
 
 import java.util.ArrayList;
+
+import androidx.core.content.ContextCompat;
 
 public class DocView
         extends AdapterView<Adapter>
