@@ -32,7 +32,7 @@ public class DocView
         implements GestureDetector.OnGestureListener, ScaleGestureDetector.OnScaleGestureListener, Runnable
 {
     private static final String TAG          = "DocView";
-    protected static final int    UNSCALED_GAP = 20;
+    protected static final int    UNSCALED_GAP = 1;
 
     protected float minScale() {return .15f;}
     protected float maxScale() {return 5.0f;}
