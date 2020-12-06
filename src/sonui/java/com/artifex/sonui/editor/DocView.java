@@ -127,9 +127,6 @@ public class DocView
     // configuration options
     protected ConfigOptions mDocCfgOptions = null;
 
-    // dataleak handlers
-    protected SODataLeakHandlers mDataLeakHandlers = null;
-
     //  set this to temporarily force layout to use a number of columns.
     protected int mForceColumnCount = -1;
 
@@ -179,15 +176,9 @@ public class DocView
 
     public void setHost(DocViewHost base) {mHostActivity = base;}
 
-    public void setDocSpecifics(ConfigOptions configOptions, SODataLeakHandlers leakHandlers)
+    public void setDocSpecifics(ConfigOptions configOptions)
     {
         mDocCfgOptions = configOptions;
-        mDataLeakHandlers = leakHandlers;
-    }
-
-    public SODataLeakHandlers getDataLeakHandlers()
-    {
-        return mDataLeakHandlers;
     }
 
     public ConfigOptions getDocConfigOptions()

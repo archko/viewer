@@ -53,8 +53,6 @@ public class NUIDocView
     private String mDocUserPath;
     protected PageAdapter mAdapter;
 
-    private SODataLeakHandlers mDataLeakHandlers;
-
     //  start page, get and set
     private int mStartPage=-1;
     protected void setStartPage(int page) {mStartPage = page;}
@@ -150,10 +148,9 @@ public class NUIDocView
     }
 
     // called right after this class is instantiated.
-    public void setDocSpecifics(ConfigOptions cfgOpts, SODataLeakHandlers leakHandlers)
+    public void setDocSpecifics(ConfigOptions cfgOpts)
     {
         mDocCfgOptions    = cfgOpts;
-        mDataLeakHandlers = leakHandlers;
     }
 
     @Override
@@ -249,47 +246,6 @@ public class NUIDocView
         }*/
     }
 
-    /*
-     * Instantiate an instance of the application data leakage handler class
-     * if available.
-     */
-    private void setDataLeakHandlers()
-    {
-        String errorBase =
-            "setDataLeakHandlers() experienced unexpected exception [%s]";
-
-        try
-        {
-            //  find a registered instance
-            if (mDataLeakHandlers==null)
-                throw new ClassNotFoundException();
-
-            mDataLeakHandlers.initDataLeakHandlers(activity(), mDocCfgOptions);
-        }
-        catch (ExceptionInInitializerError e)
-        {
-            Log.e(mDebugTag, String.format(errorBase,
-                             "ExceptionInInitializerError"));
-        }
-        catch (LinkageError e)
-        {
-            Log.e(mDebugTag, String.format(errorBase, "LinkageError"));
-        }
-        catch (SecurityException e)
-        {
-            Log.e(mDebugTag, String.format(errorBase,
-                                           "SecurityException"));
-        }
-        catch (ClassNotFoundException e)
-        {
-            Log.i(mDebugTag, "DataLeakHandlers implementation unavailable");
-        }
-        catch (IOException e)
-        {
-            Log.i(mDebugTag, "DataLeakHandlers IOException");
-        }
-    }
-
     //  get the user path for the doc used in this view
     public String getDocFileExtension()
     {
@@ -318,7 +274,6 @@ public class NUIDocView
 
         mShowUI = showUI;
         startUI();
-        setDataLeakHandlers();
         initClipboardHandler();
     }
 
@@ -335,7 +290,6 @@ public class NUIDocView
         mDocumentLib = MuPDFLib.getLib(activity());//ArDkUtils.getLibraryForPath(activity(), session.getUserPath());
 
         startUI();
-        setDataLeakHandlers();
         initClipboardHandler();
     }
 
@@ -349,7 +303,6 @@ public class NUIDocView
         mDocumentLib = MuPDFLib.getLib(activity());//ArDkUtils.getLibraryForPath(activity(), path);
 
         startUI();
-        setDataLeakHandlers();
         initClipboardHandler();
     }
 
@@ -401,7 +354,7 @@ public class NUIDocView
         mDocView = createMainView(activity());
         mDocView.setHost(this);
         mDocView.setAdapter(mAdapter);
-        mDocView.setDocSpecifics(mDocCfgOptions, mDataLeakHandlers);
+        mDocView.setDocSpecifics(mDocCfgOptions);
 
         if (usePagesView())
         {
@@ -1237,21 +1190,6 @@ public class NUIDocView
         }
 
         // Use the custom data leakage handlers if available.
-        if (mDataLeakHandlers != null)
-        {
-            mDataLeakHandlers.finaliseDataLeakHandlers();
-        }
-        else
-        {
-            //  the editor no longer has this capability built-in.
-
-            //  bug 699357
-            //  don't throw UnsupportedOperationException here
-            //  onDestroy() may be called by android.app.Activity.performDestroy()
-            //  which won't handle it, and crash.
-
-//            throw new UnsupportedOperationException();
-        }
     }
 
     public void onBackPressed()
@@ -1311,16 +1249,6 @@ public class NUIDocView
     public void onActivityResult(int requestCode, int resultCode, final Intent data)
     {
         // Use the custom data leakage handlers if available.
-        if (mDataLeakHandlers != null)
-        {
-            mDataLeakHandlers.onActivityResult(requestCode, resultCode, data);
-            return;
-        }
-        else
-        {
-            //  the editor no longer has this capability built-in.
-            throw new UnsupportedOperationException();
-        }
     }
 
     public void triggerRender()
@@ -1382,18 +1310,6 @@ public class NUIDocView
             return;
         }*/
 
-        if (mDataLeakHandlers != null)
-        {
-            //  let the data leak handler deal with pause.
-            ArDkDoc doc = mDocView.getDoc();
-            mDataLeakHandlers.pauseHandler(doc, doc.getHasBeenModified(), new Runnable(){
-                @Override
-                public void run() {
-                    whenDone.run();
-                }
-            });
-        }
-        else
         {
             whenDone.run();
         }
@@ -1482,10 +1398,6 @@ public class NUIDocView
         //  clear autoOpen
         //SOFileState.clearAutoOpen(getContext());
 
-        if (mDataLeakHandlers != null)
-        {
-            // Complete any pending photo/image insertion.
-        }
     }
 
     public void showUI(final boolean bShow)

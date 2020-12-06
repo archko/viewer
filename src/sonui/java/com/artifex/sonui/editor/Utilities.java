@@ -485,18 +485,6 @@ public class Utilities
                                context.getString(stringId);
     }
 
-    private static SODataLeakHandlers mDataLeakHandlers = null;
-
-    public static void setDataLeakHandlers (SODataLeakHandlers handlers)
-    {
-        mDataLeakHandlers = handlers;
-    }
-
-    public static SODataLeakHandlers getDataLeakHandlers()
-    {
-        return mDataLeakHandlers;
-    }
-
     private static SODocSession.SODocSessionLoadListenerCustom
                                                 mSessionLoadListener = null;
 

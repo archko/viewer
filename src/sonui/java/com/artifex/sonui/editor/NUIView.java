@@ -15,7 +15,6 @@ public class NUIView extends FrameLayout
 {
     protected NUIDocView mDocView;
     private ConfigOptions      mDocCfgOpts; // document configuration
-    private SODataLeakHandlers mLeakHandlers; // document dataleak handler
 
     public NUIView(Context context)
     {
@@ -38,11 +37,6 @@ public class NUIView extends FrameLayout
     public void setDocConfigOptions(ConfigOptions cfg)
     {
         mDocCfgOpts = cfg;
-    }
-
-    public void setDocDataLeakHandler(SODataLeakHandlers handler)
-    {
-        mLeakHandlers = handler;
     }
 
     private void initialize(Context context)
@@ -73,7 +67,7 @@ public class NUIView extends FrameLayout
             mDocView = new NUIDocViewPdf(getContext());
 
         // tell NUIDocView which configOptions/dataLeakHandler to use.
-        mDocView.setDocSpecifics(mDocCfgOpts, mLeakHandlers);
+        mDocView.setDocSpecifics(mDocCfgOpts);
     }
 
     protected void makeNUIView(Uri uri, String mimeType)

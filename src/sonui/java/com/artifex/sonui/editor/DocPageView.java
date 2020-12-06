@@ -36,7 +36,6 @@ public class DocPageView extends View implements SOPageListener
     protected ArDkPage mPage;
     private ArDkRender mRender=null;
     protected boolean mFinished = false;
-    private SODataLeakHandlers mDataLeakHandlers;
 
     protected float mScale = 1.0f;
     protected double mZoom = 1.0;
@@ -108,7 +107,6 @@ public class DocPageView extends View implements SOPageListener
         mDocView=dv;
 
         // Good place to check dataLeakHandler.
-        getDataLeakHandlers();
     }
     protected DocView getDocView() {return mDocView;}
 
@@ -742,21 +740,6 @@ public class DocPageView extends View implements SOPageListener
     protected void launchHyperLink(String url)
     {
         // Use the custom data leakage handlers if available.
-        if (mDataLeakHandlers != null)
-        {
-            try
-            {
-                mDataLeakHandlers.launchUrlHandler(url);
-            }
-            catch(UnsupportedOperationException e)
-            {
-            }
-        }
-        else
-        {
-            //  the editor no longer has this capability built-in.
-            throw new UnsupportedOperationException();
-        }
     }
 
     protected boolean tryHyperlink(Point pPage, ExternalLinkListener listener)
@@ -1045,43 +1028,6 @@ public class DocPageView extends View implements SOPageListener
         bottom += loc[1];
 
         return new Rect(left, top, right, bottom);
-    }
-
-    /*
-     * Obtain an instance of the application data leakage handler class
-     * if available.
-     */
-    private void getDataLeakHandlers()
-    {
-        String errorBase =
-            "getDataLeakHandlers() experienced unexpected exception [%s]";
-
-        try
-        {
-            //  find a registered instance.
-            mDataLeakHandlers = mDocView.getDataLeakHandlers();
-            if (mDataLeakHandlers==null)
-                throw new ClassNotFoundException();
-
-        }
-        catch (ExceptionInInitializerError e)
-        {
-            Log.e(TAG, String.format(errorBase,
-                       "ExceptionInInitializerError"));
-        }
-        catch (LinkageError e)
-        {
-            Log.e(TAG, String.format(errorBase, "LinkageError"));
-        }
-        catch (SecurityException e)
-        {
-            Log.e(TAG, String.format(errorBase,
-                       "SecurityException"));
-        }
-        catch (ClassNotFoundException e)
-        {
-            Log.i(TAG, "DataLeakHandlers implementation unavailable");
-        }
     }
 
     public Rect screenRect()
