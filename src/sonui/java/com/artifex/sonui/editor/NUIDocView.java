@@ -1561,6 +1561,11 @@ public class NUIDocView
     //  optional listener for document events.
     private DocumentListener mDocumentListener = null;
 
+    public void setDocumentListener(DocumentListener listener)
+    {
+        mDocumentListener = listener;
+    }
+
     public void gotoInternalLocation(int page, RectF box)
     {
         //  Add a history entry for the spot we're leaving.

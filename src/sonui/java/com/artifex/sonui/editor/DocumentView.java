@@ -39,7 +39,7 @@ public class DocumentView extends NUIView {
     {
         makeNUIView(uri, null);
         addView(mDocView);
-        //mDocView.setDocumentListener(mDocumentListener);
+        mDocView.setDocumentListener(mDocumentListener);
         if (page<0)
             page = 0;
         ViewingState vstate = new ViewingState(page);
