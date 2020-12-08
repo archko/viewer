@@ -5,8 +5,10 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.artifex.solib.MuPDFWidget;
 
@@ -65,6 +67,10 @@ public class DocPdfView extends DocView
             smoothScrollBy(getScrollX(), -viewport.height() + SCROLL_GAP);
             return true;
         } else {
+          Toast pageNumberToast=  Toast.makeText(getContext(), String.format("%s/%s", dpv.getPageNumber() + 1, getPageCount()), Toast.LENGTH_SHORT);
+
+            pageNumberToast.setGravity(Gravity.BOTTOM | Gravity.START, Utilities.convertDpToPixel(15f), 0);
+            pageNumberToast.show();
             return false;
         }
     }

@@ -1566,6 +1566,10 @@ public class NUIDocView
         mDocumentListener = listener;
     }
 
+    public DocumentListener getDocumentListener() {
+        return mDocumentListener;
+    }
+
     public void gotoInternalLocation(int page, RectF box)
     {
         //  Add a history entry for the spot we're leaving.

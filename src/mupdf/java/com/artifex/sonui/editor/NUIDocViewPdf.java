@@ -193,6 +193,10 @@ public class NUIDocViewPdf extends NUIDocView
                 tocEnabled = true;
             }
         });
+
+        //  use the optional document listener
+        if (getDocumentListener()!=null)
+            getDocumentListener().onDocCompleted();
     }
 
     @Override
