@@ -906,11 +906,6 @@ public class NUIDocView
                     observer.removeOnGlobalLayoutListener(this);
                     if (mFinished)
                         return;
-
-                    if (mDocView.getReflowMode())
-                        System.out.println("");//onReflowScale();
-                    else
-                        System.out.println("");//mDocView.scrollSelectionIntoView();
                 }
             });
             layoutAfterPageLoad();

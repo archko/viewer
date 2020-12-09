@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.animation.BounceInterpolator;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.RelativeLayout;
@@ -131,9 +132,6 @@ public class DocView
     //  set this to temporarily force layout to use a number of columns.
     protected int mForceColumnCount = -1;
 
-    //  keep track of the last reflow width
-    public float mLastReflowWidth = 0;
-
     public void setDoc(ArDkDoc doc)
     {
         mDoc=doc;
@@ -165,7 +163,7 @@ public class DocView
 
         mGestureDetector = new GestureDetector(context, this);
         mScaleGestureDetector = new ScaleGestureDetector(context, this);
-        mScroller = new Scroller(context);
+        mScroller = new Scroller(context, new BounceInterpolator());
         mSmoother = new Smoother(3);
 
         //  create the history object
@@ -287,7 +285,7 @@ public class DocView
         mLastViewPortWidth = viewportWidth;
 
         //  if we're at one column and wider than the viewport, leave it alone.
-        if (!mReflowMode && mLastLayoutColumns==0 && contentWidth>=viewportWidth)
+        if (mLastLayoutColumns==0 && contentWidth>=viewportWidth)
         {
             //  done forcing the column count
             mForceColumnCount = -1;
@@ -408,8 +406,6 @@ public class DocView
 
     protected boolean allowXScroll()
     {
-        if (mReflowMode)
-            return false;
         return true;
     }
 
@@ -575,8 +571,6 @@ public class DocView
             return true;
 
         //  in reflow mode we are x-constrained.
-        if (mReflowMode)
-            distanceX = 0;
 
         //  accumulate scrolling amount.
         mXScroll -= distanceX;
@@ -955,9 +949,6 @@ public class DocView
 
         mScaling = true;
 
-        if (mReflowWidth == -1)
-            mReflowWidth = getReflowWidth();
-
         //  Ignore any scroll amounts yet to be accounted for: the
         //  screen is not showing the effect of them, so they can
         //  only confuse the user
@@ -970,11 +961,6 @@ public class DocView
     protected ViewingState mViewingState;
     public void setViewingState(ViewingState state) {
         mViewingState = state;}
-
-    //  make sure there is always a reflow width set
-    public void setReflowWidth() {
-        mReflowWidth = getReflowWidth();
-    }
 
     public void onScaleEnd(ScaleGestureDetector detector)
     {
@@ -991,56 +977,15 @@ public class DocView
         getGlobalVisibleRect(viewport);
 
         //  if we're at one column and wider than the viewport, leave it alone.
-        if (!mReflowMode && mLastLayoutColumns==0 && mAllPagesRect.width()>=viewport.width())
+        if (mLastLayoutColumns==0 && mAllPagesRect.width()>=viewport.width())
         {
             mScaling = false;
             return;
         }
-
-        //  the doc, and page count.
-        ArDkDoc doc = getDoc();
-        int numPages = getPageCount();
-        if (mReflowMode)
-            numPages = mDoc.getNumPages();
 
         //  ratios for the viewport
         final float ratiox = ((float)(viewport.width())) /((float)(mAllPagesRect.width()));
         float ratioy = ((float)(viewport.height()))/((float)(mAllPagesRect.height()));
-
-        if (mReflowMode)
-        {
-            //  handle possible appearance of new pages
-            //NUIDocView.currentNUIDocView().onReflowScale();
-
-            //  remember current scroll locations
-            final int sx = getScrollX();
-            final int sy = getScrollY();
-
-            //  change the flow mode width and height
-            float pct = 1.0f;
-            if (NUIDocView.currentNUIDocView().isPageListVisible())
-                pct = ((float)getContext().getResources().getInteger(R.integer.sodk_editor_page_width_percentage))/100;
-            final float newWidth = pct * mReflowWidth / mScale;
-            final float newHeight = getReflowHeight();
-
-            final ViewTreeObserver observer = getViewTreeObserver();
-            observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    observer.removeOnGlobalLayoutListener(this);
-
-                    //  after the layout, scroll to a new y-location
-                    float factor = mLastReflowWidth/newWidth;
-                    int dy = sy - (int)(factor*sy);
-                    scrollBy(-sx, -dy);  //  this should constrain
-
-                    mLastReflowWidth = newWidth;
-                }
-            });
-
-            mScaling = false;
-            return;
-        }
 
         float ratio = Math.min(ratiox, ratioy);
 
@@ -1077,23 +1022,6 @@ public class DocView
         requestLayout();
 
         mScaling = false;
-    }
-
-    public void onReflowScale()
-    {
-        if (mReflowMode)
-        {
-            //  the number of pages might have changed while zooming in reflow mode.
-            //  Make sure they all have the same zoom, scale and size (based on the first page)
-
-            DocPageView page0 = (DocPageView)getOrCreateChild(0);
-            int numPages = mDoc.getNumPages();
-            for (int i=1; i<numPages; i++)
-            {
-                DocPageView page = (DocPageView)getOrCreateChild(i);
-                page.onReflowScale(page0);
-            }
-        }
     }
 
     protected void scrollAfterScaleEnd(int x, int y)
@@ -1177,8 +1105,6 @@ public class DocView
         boolean layout = false;
 
         //  if reflow mode was changed, do it
-        if (mPreviousReflowMode != mReflowMode)
-            layout = true;
 
         //  if scale or position was changed, do it
         if (mScale!=mLastScale || mLastScrollX!=getScrollX() || mLastScrollY!=getScrollY())
@@ -1227,8 +1153,6 @@ public class DocView
 
         //  count our pages
         int numDocPages = getPageCount();
-        if (mReflowMode)
-            numDocPages = mDoc.getNumPages();
 
         //  do nothing if there are no pages
         if (getPageCount()==0)
@@ -1283,9 +1207,6 @@ public class DocView
                 double dcol = (double)(mViewport.width()+scaledGap)/(double)(maxw+scaledGap);
                 columns = (int) Math.round(dcol);
             }
-
-            if (mReflowMode)
-                columns = 1;
         }
 
         //  limit the number of columns for docs with a small page count
@@ -1432,9 +1353,9 @@ public class DocView
             {
                 column = 0;
 
-                if (getReflowMode())
-                    childTop += childHeight;
-                else
+                //if (getReflowMode())
+                    //childTop += childHeight;
+                //else
                     childTop += unscaledRowHeight;
                 childTop += UNSCALED_GAP;
 
@@ -2194,35 +2115,6 @@ public class DocView
         smoothScrollBy(0, diff);
     }
 
-    public int getReflowWidth()
-    {
-        //  for now, base this on the first page.
-        DocPageView cv = (DocPageView)getOrCreateChild(0);
-        return cv.getReflowWidth();
-    }
-
-    public int getReflowHeight()
-    {
-        final Rect viewport = new Rect();
-        getGlobalVisibleRect(viewport);
-
-        DocPageView cv = (DocPageView)getOrCreateChild(0);
-        double factor = cv.getFactor();
-
-        return (int)(viewport.height()/factor);
-    }
-
-    private boolean mPreviousReflowMode = false;
-    private boolean mReflowMode = false;
-    private int mReflowWidth=-1;
-    public void setReflowMode(boolean val)
-    {
-        mPreviousReflowMode = mReflowMode;
-        mReflowMode = val;
-        mReflowWidth = -1;
-    }
-    public boolean getReflowMode() { return mReflowMode; }
-
     protected boolean isMovingPage() {return false;}
 
     protected int getMovingPageNumber() {return -1;}
@@ -2442,17 +2334,6 @@ public class DocView
 
         //  layout
         requestLayout();
-
-        if (mReflowMode)
-        {
-            //  handle possible appearance of new pages
-            //NUIDocView.currentNUIDocView().onReflowScale();
-
-            //  change the flow mode width and height
-            float pct = 1.0f;
-            if (NUIDocView.currentNUIDocView().isPageListVisible())
-                pct = ((float)getContext().getResources().getInteger(R.integer.sodk_editor_page_width_percentage))/100;
-        }
 
         //  set scroll values
         setScrollX(newX);

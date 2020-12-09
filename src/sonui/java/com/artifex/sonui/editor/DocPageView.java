@@ -344,14 +344,6 @@ public class DocPageView extends View implements SOPageListener
         mScale = scale;
     }
 
-    private boolean isReflowMode()
-    {
-        DocView dv = getDocView();
-        if (dv!=null && dv.getReflowMode())
-            return true;
-        return false;
-    }
-
     private boolean pagesShowing()
     {
         DocView dv = getDocView();
@@ -363,30 +355,11 @@ public class DocPageView extends View implements SOPageListener
 
     public int getUnscaledWidth()
     {
-        if (isReflowMode())
-        {
-            Point p = mPage.sizeAtZoom(mZoom);
-            return p.x;
-        }
-
         return mSize.x;
     }
     public int getUnscaledHeight()
     {
-        if (isReflowMode())
-        {
-            Point p = mPage.sizeAtZoom(mZoom);
-            return p.y;
-        }
-
         return mSize.y;
-    }
-
-    public int getReflowWidth()
-    {
-        //  reflow width is just the width of the page at zoom=1.
-        Point p = mPage.sizeAtZoom(1.0f);
-        return p.x;
     }
 
     public void render(ArDkBitmap bitmap, final SORenderListener listener)
