@@ -76,6 +76,7 @@ public class DocPageView extends View implements SOPageListener
     private final Rect mDstRect = new Rect();
     private final Paint mBlankPainter;
     private final Paint mSelectedBorderPainter;
+    private final Paint mPagePainter;
     private final Paint mBorderPainter;
     private final Rect mBorderRect = new Rect();
 
@@ -133,6 +134,13 @@ public class DocPageView extends View implements SOPageListener
         setSelectedBorderColor(ContextCompat.getColor(getContext(), R.color.sodk_editor_selected_page_border_color));
         mSelectedBorderPainter.setStyle(Paint.Style.STROKE);
         mSelectedBorderPainter.setStrokeWidth(Utilities.convertDpToPixel(context.getResources().getInteger(R.integer.sodk_editor_selected_page_border_width)));
+
+        mPagePainter = new Paint();
+        mPagePainter.setColor(ContextCompat.getColor(getContext(), R.color.sodk_editor_palette_grey));
+        //mPagePainter.setAntiAlias(true);
+        mPagePainter.setTextSize(Utilities.convertDpToPixel(30));
+        mPagePainter.setTextAlign(Paint.Align.CENTER);
+        mPagePainter.setStrokeWidth(Utilities.convertDpToPixel(2));
 
         //  create the low res bitmap painter
         if (lowResPainter==null) {
@@ -344,14 +352,6 @@ public class DocPageView extends View implements SOPageListener
         mScale = scale;
     }
 
-    private boolean isReflowMode()
-    {
-        DocView dv = getDocView();
-        if (dv!=null && dv.getReflowMode())
-            return true;
-        return false;
-    }
-
     private boolean pagesShowing()
     {
         DocView dv = getDocView();
@@ -363,30 +363,11 @@ public class DocPageView extends View implements SOPageListener
 
     public int getUnscaledWidth()
     {
-        if (isReflowMode())
-        {
-            Point p = mPage.sizeAtZoom(mZoom);
-            return p.x;
-        }
-
         return mSize.x;
     }
     public int getUnscaledHeight()
     {
-        if (isReflowMode())
-        {
-            Point p = mPage.sizeAtZoom(mZoom);
-            return p.y;
-        }
-
         return mSize.y;
-    }
-
-    public int getReflowWidth()
-    {
-        //  reflow width is just the width of the page at zoom=1.
-        Point p = mPage.sizeAtZoom(1.0f);
-        return p.x;
     }
 
     public void render(ArDkBitmap bitmap, final SORenderListener listener)
@@ -697,8 +678,10 @@ public class DocPageView extends View implements SOPageListener
 
         //  get bitmap to draw
         ArDkBitmap bitmap = mBitmapDraw;
-        if (bitmap==null || bitmap.getBitmap().isRecycled())
+        if (bitmap==null || bitmap.getBitmap().isRecycled()) {
+            canvas.drawText(String.format("Page %s", (mPageNum+1)), rBlank.centerX(), rBlank.centerY(), mPagePainter);
             return;  //  not yet rendered, or recycled
+        }
 
         //  set rectangles for drawing
         mSrcRect.set(bitmap.getRect());

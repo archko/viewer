@@ -58,18 +58,11 @@ public class PageAdapter extends BaseAdapter {
             {
                 pageView = new DocMuPdfPageView(activity, mDoc);
             }
-            else {
-                //  bad
-            }
         }
         else
         {
             //  reuse an existing one
             pageView = (DocPageView) convertView;
-        }
-
-        if (pageView == null) {
-            //  bad
         }
 
         //  set up the page
