@@ -61,14 +61,13 @@ public class DocPdfView extends DocView
         final Rect viewport = new Rect();
         getGlobalVisibleRect(viewport);
         if (y < tapPageMargin) {
-            smoothScrollBy(getScrollX(), viewport.height() - SCROLL_GAP);
+            smoothScrollBy(getScrollX(), viewport.height() - SCROLL_GAP, 0);
             return true;
         } else if (y > super.getHeight() - tapPageMargin) {
-            smoothScrollBy(getScrollX(), -viewport.height() + SCROLL_GAP);
+            smoothScrollBy(getScrollX(), -viewport.height() + SCROLL_GAP, 0);
             return true;
         } else {
-          Toast pageNumberToast=  Toast.makeText(getContext(), String.format("%s/%s", dpv.getPageNumber() + 1, getPageCount()), Toast.LENGTH_SHORT);
-
+            Toast pageNumberToast=  Toast.makeText(getContext(), String.format("%s/%s", dpv.getPageNumber() + 1, getPageCount()), Toast.LENGTH_SHORT);
             pageNumberToast.setGravity(Gravity.BOTTOM | Gravity.START, Utilities.convertDpToPixel(15f), 0);
             pageNumberToast.show();
             return false;
